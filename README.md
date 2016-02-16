@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/atdyer/quadtree-js.svg?branch=master)](https://travis-ci.org/atdyer/quadtree-js)
 
-A simple, fast, and flexible quadtree search.
+A simple, fast, and flexible quadtree search for static datasets.
 
 #### Features
 

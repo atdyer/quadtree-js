@@ -21,6 +21,7 @@ function Quadtree ( min, max, bin_size, parent ) {
 
     // Parent will be undefined if this is the top of the quadtree
     this._parent = parent;
+    this._depth = ( this._parent !== undefined ) ? this._parent._depth + 1 : 0;
 
     // Items will be a list of items. Will be unpopulated if
     // this.children is not undefined.
@@ -39,9 +40,9 @@ Quadtree.prototype = {
 
         if ( !!this._children ) {
 
-            for ( var child in this._children ) {
+            for ( var i=0; i<4; ++i ) {
 
-                Array.prototype.push.apply( all_items, child.items );
+                Array.prototype.push.apply( all_items, this._children[i].items );
 
             }
 
@@ -92,8 +93,8 @@ Quadtree.prototype = {
 
         // Find the centerpoint
         var center = new Vector2(
-            ( this.min.x + this.max.x ) / 2,
-            ( this.min.y + this.max.y ) / 2
+            ( this.min.x + this.max.x ) / 2.0,
+            ( this.min.y + this.max.y ) / 2.0
         );
 
         // Create children
@@ -127,6 +128,7 @@ Quadtree.prototype = {
             _items: []
         };
 
+        // Check for an edge intersection
         if ( this.intersects( shape ) ) {
 
             // Check if this is a branch
@@ -147,11 +149,10 @@ Quadtree.prototype = {
 
                 // It isn't so look through the items contained in
                 // this leaf
-                for ( var i=0; i<4; ++i ) {
+                for ( var i=0; i<this._items.length; ++i ) {
 
-                    // The item will tell us if it falls inside of
-                    // this quadtree
-                    if ( this._items[i].is_inside( this ) ) {
+                    // The shape will tell us if it contains the item
+                    if ( shape.contains( this._items[i] ) ) {
 
                         _search_result._items.push( this._items[i] );
 
@@ -197,11 +198,10 @@ Quadtree.prototype = {
 
                     // It isn't so look through the items contained in
                     // this leaf
-                    for ( var i=0; i<4; ++i ) {
+                    for ( var i=0; i<this._items.length; ++i ) {
 
-                        // The item will tell us if it falls inside of
-                        // this quadtree
-                        if ( this._items[i].is_inside( this ) ) {
+                        // The shape will tell us if it contains the item
+                        if ( shape.contains( this._items[i] ) ) {
 
                             _search_result._items.push( this._items[i] );
 

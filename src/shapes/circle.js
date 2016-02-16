@@ -1,6 +1,7 @@
 
 // Requires
 Vector2 = require( '../vector2' );
+Items = require( '../item' );
 
 // Circle constructor
 function Circle ( center_point, radius ) {
@@ -18,9 +19,13 @@ Circle.prototype = {
 
     constructor: Circle,
 
-    contains: function ( point ) {
+    contains: function ( item ) {
 
-        return this.center_point.distanceToSquared( point ) <= this._rsq;
+        // Check for item type
+        if ( item instanceof Vector2 || item instanceof Items.Point ) return this._contains_point( item );
+
+        // Unsupported item type, throw error
+        throw new Error( 'Unsupported item type for Circle search' );
 
     },
 
@@ -57,6 +62,12 @@ Circle.prototype = {
                     this.center_point.distanceToSquared( p2 ) <= this._rsq;
 
         }
+
+    },
+
+    _contains_point: function ( point ) {
+
+        return this.center_point.distanceToSquared( point ) <= this._rsq;
 
     }
 

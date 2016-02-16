@@ -22,11 +22,13 @@ Shape.prototype = {
 
     constructor: Shape,
 
-    contains: function ( point ) {
+    contains: function ( item ) {
 
         /**
-         * This function should test if a point falls into the shape.
-         * The point variable will be a Vector2 object.
+         * This function should test if an item falls into the shape.
+         * At the very minimum, the Vector2 type must be supported, and
+         * additional item types must be tested for in order for a shape
+         * to support searching for that type of item.
          *
          * Must return true or false.
          */
@@ -58,7 +60,8 @@ Shape.prototype = {
  */
 Shapes = {
 
-    Circle: require( './shapes/circle' )
+    Circle: require( './shapes/circle' ),
+    Rectangle: require( './shapes/rectangle' )
 
 };
 
