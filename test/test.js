@@ -34,7 +34,7 @@ describe( 'Quadtree', function () {
             var results = testtree.find_items( circle );
 
             // Perform test
-            expect( results.length ).to.equal( 3031 );
+            expect( results.length ).to.equal( 3032 );
 
         });
 
