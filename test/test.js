@@ -6,7 +6,7 @@ var expect = require( 'chai' ).expect;
 var q = require( './../src/quadtree' );
 var Vector2 = q.Vector2;
 
-describe( 'Quadtree Functionality', function () {
+describe( 'Quadtree Class Functionality', function () {
 
     it( 'Retrieve all items from a quadtree', function () {
 
@@ -90,10 +90,34 @@ describe( 'Quadtree Structure', function () {
 
     });
 
+    it( '10,000,000 point dataset with unit spacing', function () {
+
+        // This one will take a little longer
+        this.timeout( 5000 );
+
+        // Create the quadtree
+        var min = new Vector2( 0, 0 );
+        var max = new Vector2( 1000, 10000 );
+        var tree = new q.Quadtree( min, max, 5000 );
+
+        // Add the points
+        for ( var y=0; y<10000; ++y ) {
+            for ( var x=0; x<1000; ++x ) {
+
+                tree.add_item( new q.Items.Point( x+0.5, y+0.5 ) );
+
+            }
+        }
+
+        // Perform leaf/branch test
+        leaf_branch_test( tree );
+
+    });
+
 });
 
 
-describe( 'Quadtree Searches', function () {
+describe( 'Quadtree Search Accuracy', function () {
 
     describe( 'Dataset: 100 points with unit spacing', function () {
 
@@ -151,21 +175,27 @@ describe( 'Quadtree Performance', function () {
 
     describe( 'Dataset: 1,000,000 points with unit spacing', function () {
 
-        // Create the quadtree
-        var min = new Vector2( 0, 0 );
-        var max = new Vector2( 1000, 1000 );
-        var tree = new q.Quadtree( min, max, 250 );
+        var tree;
 
-        // Add the points
-        for ( var y=0; y<1000; ++y ) {
-            for ( var x=0; x<1000; ++x ) {
+        it( 'Build quadtree and dataset', function () {
 
-                tree.add_item( new q.Items.Point( x+0.5, y+0.5 ) );
+            // Create the quadtree
+            var min = new Vector2( 0, 0 );
+            var max = new Vector2( 1000, 1000 );
+            tree = new q.Quadtree( min, max, 250 );
 
+            // Add the points
+            for ( var y=0; y<1000; ++y ) {
+                for ( var x=0; x<1000; ++x ) {
+
+                    tree.add_item( new q.Items.Point( x+0.5, y+0.5 ) );
+
+                }
             }
-        }
 
-        it( 'Circle Search', function () {
+        });
+
+        it( '2 Circle Searches', function () {
 
             // Create a few different circles
             var circle1 = new q.Shapes.Circle( new Vector2( 100.5, 100.5 ), 0.1 );
@@ -181,7 +211,7 @@ describe( 'Quadtree Performance', function () {
 
         });
 
-        it( 'Rectangle Search', function () {
+        it( '2 Rectangle Searches', function () {
 
             // Create a few different rectangles
             var rectangle1 = new q.Shapes.Rectangle( new Vector2( 50, 50 ), new Vector2( 51, 51 ) );
@@ -194,6 +224,65 @@ describe( 'Quadtree Performance', function () {
             // Perform test
             expect( results1.length ).to.equal( 1 );
             expect( results2.length ).to.equal( 15000 );
+
+        });
+
+    });
+
+    describe( 'Dataset: 10,000,000 points with unit spacing', function () {
+
+        var tree;
+
+        it( 'Build quadtree and dataset', function () {
+
+            // This one will take a little longer
+            this.timeout( 5000 );
+
+            // Create the quadtree
+            var min = new Vector2( 0, 0 );
+            var max = new Vector2( 1000, 10000 );
+            tree = new q.Quadtree( min, max, 5000 );
+
+            // Add the points
+            for ( var y=0; y<10000; ++y ) {
+                for ( var x=0; x<1000; ++x ) {
+
+                    tree.add_item( new q.Items.Point( x+0.5, y+0.5 ) );
+
+                }
+            }
+
+        });
+
+        it( '2 Circle Searches', function () {
+
+            // Create a few different circles
+            var circle1 = new q.Shapes.Circle( new Vector2( 100.5, 100.5 ), 0.1 );
+            var circle2 = new q.Shapes.Circle( new Vector2( 400.5, 725.5 ), 2.0 );
+
+            // Perform the searches
+            var results1 = tree.find_items( circle1 );
+            var results2 = tree.find_items( circle2 );
+
+            // Perform tests
+            expect( results1.length ).to.equal( 1 );
+            expect( results2.length ).to.equal( 13 );
+
+        });
+
+        it( '2 Rectangle Searches', function () {
+
+            // Create a few different rectangles
+            var rectangle1 = new q.Shapes.Rectangle( new Vector2( 500, 500 ), new Vector2( 501, 501 ) );
+            var rectangle2 = new q.Shapes.Rectangle( new Vector2( 0, 0 ), new Vector2( 100, 100 ) );
+
+            // Perform the searches
+            var results1 = tree.find_items( rectangle1 );
+            var results2 = tree.find_items( rectangle2 );
+
+            // Perform test
+            expect( results1.length ).to.equal( 1 );
+            expect( results2.length ).to.equal( 10000 );
 
         });
 
