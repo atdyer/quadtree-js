@@ -1,6 +1,6 @@
 
 // Requires
-Vector2 = require( '../Vector2' );
+Vector2 = require( '../vector2' );
 
 // Point constructor
 function Point ( x, y ) {

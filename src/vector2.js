@@ -1,4 +1,16 @@
 
+/**
+ * A somewhat slimmed down version of Vector2 from the
+ * THREE.js library. I took out a few functions that other
+ * THREE.js dependencies and left ones that I thought might
+ * be useful in the future. Original authors are:
+ *
+ * @author mrdoob / http://mrdoob.com/
+ * @author philogb / http://blog.thejit.org/
+ * @author egraether / http://egraether.com/
+ * @author zz85 / http://www.lab4games.net/zz85/blog
+ */
+
 function Vector2 ( x, y ) {
 
     this.x = x || 0;

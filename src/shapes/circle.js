@@ -1,6 +1,6 @@
 
 // Requires
-Vector2 = require( '../Vector2' );
+Vector2 = require( '../vector2' );
 
 // Circle constructor
 function Circle ( center_point, radius ) {

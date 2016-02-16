@@ -1,4 +1,13 @@
 
+
+/**
+ * The Shape function and prototype are here only as a reference
+ * to describe the minimum requirements for a shape that can be
+ * used to search a quadtree. There is no need to subclass Shape,
+ * as long as all of the required functions are there.
+ */
+
+
 function Shape ( edge_point ) {
 
     /**
@@ -18,6 +27,8 @@ Shape.prototype = {
         /**
          * This function should test if a point falls into the shape.
          * The point variable will be a Vector2 object.
+         *
+         * Must return true or false.
          */
 
         return false;
@@ -27,9 +38,12 @@ Shape.prototype = {
     intersects: function ( x1, y1, x2, y2 ) {
 
         /**
-         * This function should test if a line intersects with the
-         * shape's edge. The p1 and p2 variables are the endpoints of
-         * the line and are both Vector2 objects.
+         * This function should test if a line segment intersects with the
+         * shape's edge. The variables x1, y1 are the x, y coordinates
+         * of one end of the line segment and x2, y2 are the coordinates
+         * of the other end.
+         *
+         * Must return true or false.
          */
 
         return false;
@@ -38,6 +52,10 @@ Shape.prototype = {
 
 };
 
+
+/**
+ * Create exports
+ */
 Shapes = {
 
     Circle: require( './shapes/circle' )

@@ -2,7 +2,13 @@
   "name": "quadtree-js",
   "version": "1.0.0",
   "description": "",
-  "main": "Vector3.js",
+  "main": "src/quadtree.js",
   "author": "Tristan Dyer",
-  "license": "ISC"
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.5.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
 }

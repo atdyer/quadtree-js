@@ -1,4 +1,13 @@
 
+
+/**
+ * The Item function and prototype are here only as a reference
+ * to describe the minimum requirements for an item that can be
+ * placed into a quadtree. There is no need to subclass Item, as
+ * long as all of the required functions are there.
+ */
+
+
 function Item () {
 
     /**
@@ -25,6 +34,10 @@ Item.prototype = {
 
 };
 
+
+/**
+ * Create exports
+ */
 Items = {
 
     Point: require( './items/point' )

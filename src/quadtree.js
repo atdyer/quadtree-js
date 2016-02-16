@@ -1,13 +1,13 @@
 
-Vector2 = require( './Vector2' );
+Vector2 = require( './vector2' );
 
-function Quadtree ( min, max, bin_size ) {
+function Quadtree ( min, max, bin_size, parent ) {
 
     // this.min is the southwest corner of the bounding box
-    this.min = ( min !== undefined ) ? min : new Vector2( + Infinity, + Infinity );
+    this.min = ( min !== undefined ) ? min : new Vector2( -1, -1 );
 
     // this.max is the northeast corner of the bounding box
-    this.max = ( max !== undefined ) ? max : new Vector2( - Infinity, - Infinity );
+    this.max = ( max !== undefined ) ? max : new Vector2( 1, 1 );
 
     // this.bin_size is the max number of items that a leaf can hold
     this.bin_size = ( bin_size !== undefined ) ? bin_size : 500;
@@ -18,6 +18,9 @@ function Quadtree ( min, max, bin_size ) {
 
     // Children will either be a list of Quadtrees or undefined.
     this._children = undefined;
+
+    // Parent will be undefined if this is the top of the quadtree
+    this._parent = parent;
 
     // Items will be a list of items. Will be unpopulated if
     // this.children is not undefined.
@@ -70,7 +73,7 @@ Quadtree.prototype = {
         } else {
 
             // No, so either add the item or split into a branch
-            if ( this._items.length >= this.bin_size ) {
+            if ( this._items.length >= this.bin_size && item.is_inside( this ) ) {
 
                 this.branch();
                 this.add_item( item );
@@ -94,10 +97,10 @@ Quadtree.prototype = {
         );
 
         // Create children
-        var ll = new Quadtree( this.min, center, this.bin_size );
-        var ur = new Quadtree( center, this.max, this.bin_size );
-        var lr = new Quadtree( this.min.clone().setX( center.x ), this.max.clone().setY( center.y ), this.bin_size );
-        var ul = new Quadtree( this.min.clone().setY( center.y ), this.max.clone().setX( center.x ), this.bin_size );
+        var ll = new Quadtree( this.min, center, this.bin_size, this );
+        var ur = new Quadtree( center, this.max, this.bin_size, this );
+        var lr = new Quadtree( this.min.clone().setX( center.x ), this.max.clone().setY( center.y ), this.bin_size, this );
+        var ul = new Quadtree( this.min.clone().setY( center.y ), this.max.clone().setX( center.x ), this.bin_size, this );
         this._children = [ ll, lr, ul, ur ];
 
         // Move items to children
@@ -159,7 +162,7 @@ Quadtree.prototype = {
             }
 
             // Return without early exit
-            return _search_result;
+            return this._parent ? _search_result : _search_result._items;
 
         } else {
 
@@ -184,7 +187,7 @@ Quadtree.prototype = {
                         if ( _child_items._early_exit ) {
 
                             _search_result._early_exit = true;
-                            return _search_result;
+                            return this._parent ? _search_result : _search_result._items;
 
                         }
 
@@ -210,7 +213,7 @@ Quadtree.prototype = {
 
                 // Early exit
                 _search_result._early_exit = true;
-                return _search_result;
+                return this._parent ? _search_result : _search_result._items;
 
             }
 
@@ -224,7 +227,7 @@ Quadtree.prototype = {
 
             }
 
-            return _search_result;
+            return this._parent ? _search_result : _search_result._items;
 
         }
 
@@ -245,6 +248,7 @@ module.exports = {
 
     Quadtree: Quadtree,
     Shapes: require( './shape' ),
-    Items: require( './item' )
+    Items: require( './item' ),
+    Vector2: require( './vector2' )
 
 };
