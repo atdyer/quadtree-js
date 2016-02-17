@@ -36,19 +36,18 @@ Quadtree.prototype = {
 
     get items () {
 
-        var all_items = this._items.slice( 0 );
-
         if ( !!this._children ) {
 
-            for ( var i=0; i<4; ++i ) {
-
-                Array.prototype.push.apply( all_items, this._children[i].items );
-
-            }
+            return this._items.slice( 0 ).concat(
+                this._children[0].items,
+                this._children[1].items,
+                this._children[2].items,
+                this._children[3].items
+            );
 
         }
 
-        return all_items;
+        return this._items.slice( 0 );
 
     },
 

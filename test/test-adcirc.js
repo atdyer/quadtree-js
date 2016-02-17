@@ -16,7 +16,7 @@ var num_nodes = 0;
 var num_elements = 0;
 
 // Functions to build stuff
-function build_quadtree_from_file( file, callback ) {
+function read_fort14( file, callback ) {
 
     const rl = readline.createInterface({
         input: fs.createReadStream( file )
@@ -28,9 +28,6 @@ function build_quadtree_from_file( file, callback ) {
     var min_node = new Vector2( + Infinity, + Infinity );
     var max_node = new Vector2( - Infinity, - Infinity );
     var nodes = [];
-
-    // Quadtree variables
-    var quadtree;
 
     rl.on( 'line', function( line ) {
 
@@ -72,19 +69,9 @@ function build_quadtree_from_file( file, callback ) {
         // out by just a hair.
         max_node.addScalar( 0.00001 );
 
-        // Create the quadtree
-        quadtree = new q.Quadtree( min_node, max_node, 100 );
-
-        // Add nodes to the quadtree
-        var node;
-        while ( node = nodes.pop() ) {
-
-            quadtree.add_item( node );
-
-        }
-
         // Call the callback
-        callback( quadtree );
+        callback( min_node, max_node, nodes );
+
 
     });
 
@@ -92,16 +79,47 @@ function build_quadtree_from_file( file, callback ) {
 
 describe( 'ADCIRC Quadtree Functionality', function () {
 
-    it( 'Build quadtree from a subdomain', function ( done ) {
+    var min_node, max_node, node_list, quadtree;
 
-        build_quadtree_from_file( 'data/fort.14', function ( quadtree ) {
+    before( 'Read the fort.14 file', function ( done ) {
 
-            var nodes = quadtree.items;
+        this.timeout( 15000 );
 
-            expect( nodes.length ).to.equal( num_nodes );
+        // Git: 'data/fort.14'
+        // Fran: '/home/tristan/Adcirc/fran/fort.14'
+        // Louisiana: '/home/tristan/box/adcirc/domains/louisiana/fort.14'
+        read_fort14( 'data/fort.14', function ( _min_node, _max_node, _nodes ) {
+
+            min_node = _min_node;
+            max_node = _max_node;
+            node_list = _nodes;
             done();
 
         });
+
+    });
+
+    it( 'Build quadtree from a subdomain', function () {
+
+        // Create the quadtree
+        quadtree = new q.Quadtree( min_node, max_node, 500 );
+
+        // Add nodes to the quadtree
+        for ( var i=0; i<node_list.length; ++i ) {
+
+            quadtree.add_item( node_list[i] );
+
+        }
+
+        expect( quadtree ).to.not.be.undefined;
+
+    });
+
+    it( 'Retrieve all nodes from quadtree', function () {
+
+        var nodes = quadtree.items;
+
+        expect( nodes.length ).to.equal( num_nodes );
 
     });
 
