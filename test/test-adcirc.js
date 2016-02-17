@@ -42,9 +42,9 @@ function build_quadtree_from_file( file, callback ) {
 
                 num_elements = parseInt( infoline[0], 10 );
                 num_nodes = parseInt( infoline[1], 10 );
-                console.log( 'Properties of ' + file );
-                console.log( '\t' + num_nodes + ' nodes' );
-                console.log( '\t' + num_elements + ' elements' );
+                console.log( '\tProperties of ' + file );
+                console.log( '\t\t' + num_nodes + ' nodes' );
+                console.log( '\t\t' + num_elements + ' elements' );
 
             }
 
