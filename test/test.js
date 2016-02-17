@@ -236,7 +236,7 @@ describe( 'Quadtree Performance', function () {
         it( 'Build quadtree and dataset', function () {
 
             // This one will take a little longer
-            this.timeout( 5000 );
+            this.timeout( 15000 );
 
             // Create the quadtree
             var min = new Vector2( 0, 0 );
