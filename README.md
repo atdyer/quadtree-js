@@ -36,3 +36,28 @@ var circle = new q.Shapes.Circle( new q.Vector2( x, y ), radius );
 var search_results = quadtree.find_items( circle ); // Returns a list of items
 
 ```
+
+#### Shapes
+
+The following shapes can be used to search a quadtree:
+
+##### Rectangle
+
+```javascript
+// Create a rectangle
+var rectangle = new q.Shapes.Rectangle( bottom_left, top_right );
+```
+
+where ```bottom_left``` and ```top_right``` are both ```Vector2``` objects
+corresponding to the bottom left and top right coordinates of the rectangle.
+
+##### Circle
+
+```javascript
+// Create a circle
+var circle = new q.Shapes.Circle( center_point, radius );
+```
+
+where ```center_point``` is a ```Vector2``` object corresponding to the coordinates
+of the center point of the circle, and ```radius``` is a numerical value
+corresponding to the radius of the circle.

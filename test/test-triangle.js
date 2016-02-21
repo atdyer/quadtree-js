@@ -51,16 +51,6 @@ describe( 'Triangle Shape Tests', function () {
 
     });
 
-    it( 'Retrieve all items from a quadtree', function () {
-
-        // Get them back
-        var triangles = tree.items;
-
-        // Perform test
-        expect( triangles.length ).to.equal( 4 );
-
-    });
-
     it( 'Circle Search', function () {
 
         // Create a few different circles
@@ -72,6 +62,22 @@ describe( 'Triangle Shape Tests', function () {
         var results2 = tree.find_items( circle2 );
 
         // Perform tests
+        expect( results1.length ).to.equal( 1 );
+        expect( results2.length ).to.equal( 4 );
+
+    });
+
+    it( 'Rectangle Search', function () {
+
+        // Create a few different rectangles
+        var rect1 = new q.Shapes.Rectangle( new Vector2( 0, 0 ), new Vector2( 2, 2 ) );
+        var rect2 = new q.Shapes.Rectangle( new Vector2( 0, 0 ), new Vector2( 10, 10 ) );
+
+        // Perform the searches
+        var results1 = tree.find_items( rect1 );
+        var results2 = tree.find_items( rect2 );
+
+        // Perform the tests
         expect( results1.length ).to.equal( 1 );
         expect( results2.length ).to.equal( 4 );
 

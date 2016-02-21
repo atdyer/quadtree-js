@@ -21,6 +21,7 @@ Rectangle.prototype = {
 
         // Check for item type
         if ( item instanceof Vector2 || item instanceof Items.Point ) return this._contains_point( item );
+        if ( item instanceof Items.Triangle ) return this._contains_triangle( item );
 
         // Unsupported item type, throw error
         throw new Error( 'Unsupported item type for Rectangle search' );
@@ -41,6 +42,14 @@ Rectangle.prototype = {
                 point.x <  this.top_right.x &&
                 point.y >= this.bottom_left.y &&
                 point.y <  this.top_right.y;
+
+    },
+
+    _contains_triangle: function ( triangle ) {
+
+        return  this._contains_point( triangle.p1 ) ||
+                this._contains_point( triangle.p2 ) ||
+                this._contains_point( triangle.p3 );
 
     }
 
