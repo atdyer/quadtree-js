@@ -23,6 +23,7 @@ Circle.prototype = {
 
         // Check for item type
         if ( item instanceof Vector2 || item instanceof Items.Point ) return this._contains_point( item );
+        if ( item instanceof Items.Triangle ) return this._contains_triangle( item );
 
         // Unsupported item type, throw error
         throw new Error( 'Unsupported item type for Circle search' );
@@ -68,6 +69,14 @@ Circle.prototype = {
     _contains_point: function ( point ) {
 
         return this.center_point.distanceToSquared( point ) <= this._rsq;
+
+    },
+
+    _contains_triangle: function ( triangle ) {
+
+        return  this._contains_point( triangle.p1 ) ||
+                this._contains_point( triangle.p2 ) ||
+                this._contains_point( triangle.p3 );
 
     }
 

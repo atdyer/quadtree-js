@@ -40,7 +40,8 @@ Item.prototype = {
  */
 Items = {
 
-    Point: require( './items/point' )
+    Point: require( './items/point' ),
+    Triangle: require( './items/triangle' )
 
 };
 
