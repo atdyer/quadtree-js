@@ -71,7 +71,7 @@ describe( 'Triangle Shape Tests', function () {
 
         // Create a few different rectangles
         var rect1 = new q.Shapes.Rectangle( new Vector2( 0, 0 ), new Vector2( 2, 2 ) );
-        var rect2 = new q.Shapes.Rectangle( new Vector2( 0, 0 ), new Vector2( 10, 10 ) );
+        var rect2 = new q.Shapes.Rectangle( new Vector2( -1, -1 ), new Vector2( 11, 11 ) );
 
         // Perform the searches
         var results1 = tree.find_items( rect1 );

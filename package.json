@@ -9,6 +9,7 @@
     "chai": "^3.5.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "browserify bin/browserify/quadtree.js -o bin/quadtree.js"
   }
 }

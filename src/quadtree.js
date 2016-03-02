@@ -14,7 +14,7 @@ function Quadtree ( min, max, bin_size, parent ) {
 
     // Use the northeast corner of the bounding box as an arbitrary
     // point that falls on the bounding box
-    this.edge_point = this.max.clone();
+    this.edge_point = this.min.clone();
 
     // Children will either be a list of Quadtrees or undefined.
     this._children = undefined;
